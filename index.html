@@ -119,30 +119,11 @@
     </div>
     <footer>صنع بحب لعشاق الكيمياء</footer>
 
-    <!-- Pop-up Modal for Calculations -->
-    <div class="modal fade" id="stepModal" tabindex="-1" aria-labelledby="stepModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="stepModalLabel">الحساب خطوة بخطوة</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
-                </div>
-                <div class="modal-body" id="modalContent">
-                    <!-- Content will be inserted dynamically -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
     <script>
         const elements = [];
         const stepsContainer = document.getElementById("steps");
-        const modalContent = document.getElementById("modalContent");
 
         function addElement() {
             const element = document.getElementById("element").value.trim();
@@ -160,7 +141,6 @@
 
         function updateSteps() {
             stepsContainer.innerHTML = "";
-            modalContent.innerHTML = "";  // Clear the modal content
 
             let totalMoles = 0;
             const moleRatios = [];
@@ -176,9 +156,6 @@
             });
             stepsContainer.appendChild(step1);
 
-            // Show Step 1 Modal
-            showModal(step1.innerHTML);
-
             // Step 2: Normalize Mole Ratios
             const smallestMole = Math.min(...moleRatios);
             const normalized = moleRatios.map(moles => (moles / smallestMole).toFixed(1));
@@ -188,9 +165,6 @@
                 step2.innerHTML += `${elements[i].element}: ${moleRatios[i]} / ${smallestMole} = ${ratio}<br>`;
             });
             stepsContainer.appendChild(step2);
-
-            // Show Step 2 Modal
-            showModal(step2.innerHTML);
 
             // Step 3: Display Formula
             const formula = normalized
@@ -202,22 +176,7 @@
             const step3 = document.createElement("div");
             step3.innerHTML = `<strong>الخطوة 3:</strong> الصيغة الأولية: <strong>${formula}</strong>`;
             stepsContainer.appendChild(step3);
-
-            // Show Step 3 Modal
-            showModal(step3.innerHTML);
         }
-
-        function showModal(content) {
-            modalContent.innerHTML = content;
-            const modal = new bootstrap.Modal(document.getElementById("stepModal"));
-            modal.show();
-        }
-
-        // Enable Bootstrap tooltips
-        var tooltipTriggerList = Array.from(document.querySelectorAll('.tooltip'));
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
     </script>
 </body>
 </html>
