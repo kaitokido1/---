@@ -1,15 +1,12 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حاسبة الصيغة الأولية</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Google Font for Cairo (Arabic) -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
+    <title>Empirical Formula Calculator</title>
     <style>
         body {
-            font-family: 'Cairo', Arial, sans-serif;
+            font-family: Arial, sans-serif;
             background-color: #f8f9fa;
             margin: 0;
             padding: 0;
@@ -22,7 +19,6 @@
 
         h1 {
             color: #2c3e50;
-            margin-bottom: 20px;
         }
 
         .container {
@@ -30,8 +26,9 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             padding: 20px;
-            max-width: 600px;
+            max-width: 500px;
             width: 90%;
+            margin: auto;
         }
 
         .form-group {
@@ -84,43 +81,31 @@
             font-size: 0.8rem;
             color: #888;
         }
-        
-        .tooltip {
-            font-size: 12px;
-            color: #2980b9;
-            cursor: pointer;
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
-    <h1>حاسبة الصيغة الأولية</h1>
+    <h1>Empirical Formula Calculator</h1>
     <div class="container">
         <form id="formulaForm">
             <div class="form-group">
-                <label for="element">رمز العنصر:</label>
-                <input type="text" id="element" placeholder="أدخل رمز العنصر (مثال: C)" required>
-                <span class="tooltip" data-bs-toggle="tooltip" data-bs-placement="top" title="أدخل الرمز الكيميائي (مثل C، H، O)"></span>
+                <label for="element">Element:</label>
+                <input type="text" id="element" placeholder="Enter element symbol (e.g., C)" required>
             </div>
             <div class="form-group">
-                <label for="percentage">النسبة المئوية (%):</label>
-                <input type="number" id="percentage" step="0.01" placeholder="أدخل النسبة المئوية (مثال: 85.63)" required>
-                <span class="tooltip" data-bs-toggle="tooltip" data-bs-placement="top" title="أدخل النسبة المئوية للعنصر في المركب"></span>
+                <label for="percentage">Percentage (%):</label>
+                <input type="number" id="percentage" step="0.01" placeholder="Enter percentage (e.g., 85.63)" required>
             </div>
             <div class="form-group">
-                <label for="molarMass">الكتلة المولية (غرام/مول):</label>
-                <input type="number" id="molarMass" step="0.01" placeholder="أدخل الكتلة المولية (مثال: 12.01)" required>
-                <span class="tooltip" data-bs-toggle="tooltip" data-bs-placement="top" title="أدخل الكتلة المولية للعنصر (مثل: 12.01 للكربون)"></span>
+                <label for="molarMass">Molar Mass (g/mol):</label>
+                <input type="number" id="molarMass" step="0.01" placeholder="Enter molar mass (e.g., 12.01)" required>
             </div>
-            <button type="button" onclick="addElement()">إضافة عنصر</button>
+            <button type="button" onclick="addElement()">Add Element</button>
         </form>
 
         <div id="steps"></div>
     </div>
-    <footer>صنع بحب لعشاق الكيمياء</footer>
+    <footer>Made with ❤️ for Chemistry Enthusiasts</footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
     <script>
         const elements = [];
         const stepsContainer = document.getElementById("steps");
@@ -131,7 +116,7 @@
             const molarMass = parseFloat(document.getElementById("molarMass").value);
 
             if (!element || isNaN(percentage) || isNaN(molarMass)) {
-                alert("يرجى ملء جميع الحقول بشكل صحيح!");
+                alert("Please fill in all fields correctly!");
                 return;
             }
 
@@ -147,12 +132,12 @@
 
             // Step 1: Calculate Moles
             const step1 = document.createElement("div");
-            step1.innerHTML = `<strong>الخطوة 1:</strong> حساب المولات لكل عنصر.`;
+            step1.innerHTML = `<strong>Step 1:</strong> Calculate moles for each element.`;
             elements.forEach(({ element, percentage, molarMass }) => {
                 const moles = (percentage / molarMass).toFixed(2);
                 moleRatios.push(moles);
                 totalMoles++;
-                step1.innerHTML += `<br>${element}: ${percentage} / ${molarMass} = ${moles} مول`;
+                step1.innerHTML += `<br>${element}: ${percentage} / ${molarMass} = ${moles} moles`;
             });
             stepsContainer.appendChild(step1);
 
@@ -160,7 +145,7 @@
             const smallestMole = Math.min(...moleRatios);
             const normalized = moleRatios.map(moles => (moles / smallestMole).toFixed(1));
             const step2 = document.createElement("div");
-            step2.innerHTML = `<strong>الخطوة 2:</strong> تطبيع نسب المولات.<br>`;
+            step2.innerHTML = `<strong>Step 2:</strong> Normalize the mole ratios.<br>`;
             normalized.forEach((ratio, i) => {
                 step2.innerHTML += `${elements[i].element}: ${moleRatios[i]} / ${smallestMole} = ${ratio}<br>`;
             });
@@ -174,7 +159,7 @@
                 })
                 .join("");
             const step3 = document.createElement("div");
-            step3.innerHTML = `<strong>الخطوة 3:</strong> الصيغة الأولية: <strong>${formula}</strong>`;
+            step3.innerHTML = `<strong>Step 3:</strong> Empirical Formula: <strong>${formula}</strong>`;
             stepsContainer.appendChild(step3);
         }
     </script>
